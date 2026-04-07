@@ -399,142 +399,85 @@ elif tab == "🔍 SHAP Explainability":
                 st.success("✅ SHAP analysis complete!")
             except Exception as e:
                 st.error(f"SHAP analysis failed: {e}")
-                import traceback
-                with st.expander("Error details"):
-                    st.code(traceback.format_exc())
-                st.stop()
-
-    # Display results if available
-    if os.path.exists(json_path):
-        import json
-        with open(json_path, "r") as f:
-            shap_data = json.load(f)
-
-        st.subheader("📊 Global Feature Importance")
-        importance = pd.DataFrame(shap_data["global_feature_importance"])
-        fig = px.bar(
-            importance, x="mean_abs_shap", y="feature",
-            orientation="h", color="mean_abs_shap",
-            color_continuous_scale="RdYlBu_r",
-            title="Mean |SHAP Value| per Factor",
-        )
-        fig.update_layout(height=400, yaxis=dict(autorange="reversed"))
-        st.plotly_chart(fig, use_container_width=True)
-
-        # Display SHAP plots
-        col1, col2 = st.columns(2)
-        with col1:
-            if os.path.exists(bar_path):
-                st.image(bar_path, caption="SHAP Bar Chart")
-        with col2:
-            if os.path.exists(summary_path):
-                st.image(summary_path, caption="SHAP Summary Plot")
-
-        # Per-sample analysis
-        per_sample = shap_data.get("per_sample_top_factors", [])
-        if per_sample:
-            st.subheader("🔎 Per-Stock Factor Breakdown (Sample)")
-            sample_df = []
-            for item in per_sample[:20]:
-                for factor in item["top_factors"]:
-                    sample_df.append({
-                        "Sample": item["sample_index"],
-                        "Factor": factor["feature"],
-                        "SHAP Value": factor["shap_value"],
-                        "Direction": factor["direction"],
-                    })
-            if sample_df:
-                st.dataframe(pd.DataFrame(sample_df), use_container_width=True)
-    else:
-        st.info("No SHAP data found. Click **Run SHAP Analysis** to generate.")
-
-
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 6: AI INSIGHTS (CSV + Manual)
+# TAB 6: AI INSIGHTS (PDF + Manual)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 elif tab == "🧠 AI Insights":
     st.header("🧠 AI Portfolio Insights")
-    st.markdown("Upload a portfolio CSV **or** manually configure your portfolio to get AI-powered analysis.")
+    st.markdown("Upload a brokerage **PDF statement** or manually configure your portfolio to get AI-powered analysis.")
 
-    # --- CSV Upload Mode ---
-    st.subheader("📂 Option 1: Upload Portfolio CSV")
-    ai_csv = st.file_uploader(
-        "Upload a CSV with portfolio holdings (columns like: symbol/stock, value/weight, quantity, price)",
-        type=["csv"], key="ai_csv_upload",
+    portfolio_data = None
+
+    # --- PDF Upload Mode ---
+    st.subheader("📂 Option 1: Upload Brokerage PDF")
+    ai_pdf = st.file_uploader(
+        "Upload your brokerage PDF (holdings, P&L, or trade statements)",
+        type=["pdf"], key="ai_pdf_upload", accept_multiple_files=True,
     )
 
-    portfolio_data = None  # Will be set by either CSV or manual mode
+    if ai_pdf:
+        with st.spinner("🔍 Parsing PDF and extracting portfolio data..."):
+            try:
+                from scripts.document_analyzer import analyze_document
+                result = analyze_document(ai_pdf, user_id="ai_insights", enrich=True)
 
-    if ai_csv is not None:
-        try:
-            df_uploaded = pd.read_csv(ai_csv)
-            st.dataframe(df_uploaded.head(10), use_container_width=True)
+                pm = result.get("portfolio_metrics", {})
+                ra = result.get("risk_analysis", {})
+                holdings = result.get("extracted_data", {}).get("holdings", [])
 
-            # Auto-detect value column
-            val_col = None
-            for candidate in ["value", "total_value", "market_value", "amount", "Value", "Total Value"]:
-                if candidate in df_uploaded.columns:
-                    val_col = candidate
-                    break
+                total_value = float(pm.get("total_portfolio_value", 0))
+                n_stocks = int(pm.get("number_of_stocks", len(holdings)))
+                concentration = float(pm.get("top_3_concentration_ratio", 0))
+                div_score = float(pm.get("diversification_score", 0))
+                volatility = float(pm.get("portfolio_volatility", 0.25))
+                risk_score = float(ra.get("risk_score", 5))
 
-            weight_col = None
-            for candidate in ["weight", "portfolio_weight", "Weight", "allocation"]:
-                if candidate in df_uploaded.columns:
-                    weight_col = candidate
-                    break
+                # Show parsed summary
+                doc_info = result.get("document_summary", {})
+                st.success(
+                    f"✅ Parsed **{n_stocks}** holdings from **{doc_info.get('broker', 'Unknown')}** "
+                    f"({', '.join(doc_info.get('document_types', []))}) | "
+                    f"Total Value: **₹{total_value:,.0f}** | Risk Score: **{risk_score}/10**"
+                )
 
-            symbol_col = None
-            for candidate in ["symbol", "ticker", "stock", "stock_name", "Symbol", "Ticker"]:
-                if candidate in df_uploaded.columns:
-                    symbol_col = candidate
-                    break
+                # Show holdings preview
+                if holdings:
+                    with st.expander("📊 Extracted Holdings Preview", expanded=False):
+                        rows = []
+                        for h in holdings:
+                            rows.append({
+                                "Stock": h.get("stock_name", ""),
+                                "Symbol": h.get("standardized_symbol") or h.get("symbol", ""),
+                                "Qty": h.get("quantity"),
+                                "Avg Price": h.get("average_buy_price"),
+                                "Value": h.get("total_value"),
+                                "Weight %": h.get("portfolio_weight"),
+                            })
+                        st.dataframe(pd.DataFrame(rows), use_container_width=True)
 
-            n_stocks = len(df_uploaded)
-            total_value = 0
-            concentration = 0
-            div_score = 0
-            volatility_est = 0.25
-
-            if val_col and pd.api.types.is_numeric_dtype(df_uploaded[val_col]):
-                total_value = float(df_uploaded[val_col].sum())
-                if total_value > 0:
-                    weights = df_uploaded[val_col] / total_value
-                    top3 = weights.nlargest(3).sum() * 100
-                    concentration = float(top3)
-                    hhi = (weights ** 2).sum()
-                    div_score = float(1 - hhi)
-            elif weight_col and pd.api.types.is_numeric_dtype(df_uploaded[weight_col]):
-                weights = df_uploaded[weight_col]
-                if weights.sum() > 0:
-                    weights = weights / weights.sum()
-                    top3 = weights.nlargest(3).sum() * 100
-                    concentration = float(top3)
-                    hhi = (weights ** 2).sum()
-                    div_score = float(1 - hhi)
-                    total_value = 100000  # placeholder
-
-            # Risk score heuristic
-            risk_score = min(10, max(1, concentration / 10))
-
-            st.success(f"✅ Parsed **{n_stocks}** holdings | Total Value: **${total_value:,.0f}** | Top-3 Concentration: **{concentration:.1f}%**")
-
-            portfolio_data = {
-                "portfolio_metrics": {
-                    "total_portfolio_value": total_value,
-                    "number_of_stocks": n_stocks,
-                    "top_3_concentration_ratio": round(concentration, 1),
-                    "diversification_score": round(div_score, 2),
-                    "portfolio_volatility": volatility_est,
-                },
-                "risk_analysis": {"risk_score": round(risk_score, 1)},
-                "holdings_summary": df_uploaded.to_dict(orient="records")[:20],
-            }
-        except Exception as e:
-            st.error(f"Failed to parse CSV: {e}")
+                portfolio_data = {
+                    "portfolio_metrics": {
+                        "total_portfolio_value": total_value,
+                        "number_of_stocks": n_stocks,
+                        "top_3_concentration_ratio": round(concentration, 1),
+                        "diversification_score": round(div_score, 2),
+                        "portfolio_volatility": volatility,
+                    },
+                    "risk_analysis": {"risk_score": round(risk_score, 1)},
+                    "holdings_summary": [{"stock": h.get("stock_name",""), "value": h.get("total_value",0), "weight": h.get("portfolio_weight",0)} for h in holdings[:20]],
+                    "investor_profile": result.get("investor_profile", "Unknown"),
+                    "key_insights": result.get("key_insights", []),
+                    "risk_factors": result.get("risk_factors", []),
+                }
+            except Exception as e:
+                st.error(f"Failed to parse PDF: {e}")
+                import traceback
+                with st.expander("Error details"):
+                    st.code(traceback.format_exc())
 
     # --- Manual Fallback Mode ---
-    with st.expander("⚙️ Option 2: Manual Configuration (click to expand)", expanded=(ai_csv is None)):
+    with st.expander("⚙️ Option 2: Manual Configuration (click to expand)", expanded=(not ai_pdf)):
         col1, col2 = st.columns(2)
         with col1:
             m_total_value = st.number_input("Total Portfolio Value ($)", value=500000, step=10000)
@@ -585,7 +528,7 @@ elif tab == "🧠 AI Insights":
 
     if st.button("🚀 Generate AI Insights", type="primary"):
         if portfolio_data is None:
-            st.warning("Please upload a CSV or configure your portfolio above.")
+            st.warning("Please upload a PDF or configure your portfolio above.")
         else:
             with st.spinner("🧠 Generating AI insights..."):
                 try:
@@ -608,68 +551,100 @@ elif tab == "🧠 AI Insights":
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 7: RISK METRICS PANEL (CSV + Pre-built)
+# TAB 7: RISK METRICS PANEL (PDF + Pre-built)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 elif tab == "⚡ Risk Metrics":
     st.header("⚡ Risk Metrics Dashboard")
-    st.markdown("Upload your own portfolio CSV **or** select a pre-built strategy.")
+    st.markdown("Upload a brokerage **PDF statement** or select a pre-built strategy for risk analysis.")
 
-    returns = None  # Will hold the daily returns series
+    risk_result = None  # Holds the full analysis result from PDF
+    returns = None  # Holds daily returns for pre-built portfolios
 
-    # --- CSV Upload Mode ---
-    risk_csv = st.file_uploader(
-        "Upload a CSV with daily returns or prices (columns: date + return/close/price)",
-        type=["csv"], key="risk_csv_upload",
+    # --- PDF Upload Mode ---
+    risk_pdf = st.file_uploader(
+        "Upload your brokerage PDF for risk analysis",
+        type=["pdf"], key="risk_pdf_upload", accept_multiple_files=True,
     )
 
-    if risk_csv is not None:
-        try:
-            df_risk = pd.read_csv(risk_csv)
-            # Find date column
-            date_col = None
-            for candidate in df_risk.columns:
-                if "date" in candidate.lower():
-                    date_col = candidate
-                    break
-            if date_col is None:
-                date_col = df_risk.columns[0]
-            df_risk[date_col] = pd.to_datetime(df_risk[date_col])
-            df_risk = df_risk.set_index(date_col).sort_index()
+    if risk_pdf:
+        with st.spinner("🔍 Parsing PDF and computing risk metrics..."):
+            try:
+                from scripts.document_analyzer import analyze_document
+                risk_result = analyze_document(risk_pdf, user_id="risk_metrics", enrich=True)
+            except Exception as e:
+                st.error(f"Failed to parse PDF: {e}")
+                import traceback
+                with st.expander("Error details"):
+                    st.code(traceback.format_exc())
 
-            # Find the value column
-            val_col = None
-            for candidate in ["return", "daily_return", "returns", "Daily Return"]:
-                if candidate in df_risk.columns:
-                    val_col = candidate
-                    break
-            if val_col is None:
-                for candidate in ["close", "Close", "price", "Price", "value", "Value"]:
-                    if candidate in df_risk.columns:
-                        val_col = candidate
-                        break
+    if risk_result is not None:
+        # Display PDF-derived risk dashboard
+        pm = risk_result.get("portfolio_metrics", {})
+        ra = risk_result.get("risk_analysis", {})
 
-            if val_col is None:
-                numeric_cols = df_risk.select_dtypes(include=np.number).columns
-                if len(numeric_cols) > 0:
-                    val_col = numeric_cols[0]
+        st.subheader("📊 Portfolio Summary")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("💰 Total Value", f"₹{float(pm.get('total_portfolio_value', 0)):,.0f}")
+        c2.metric("📊 Stocks", pm.get("number_of_stocks", 0))
+        c3.metric("🎯 Risk Score", f"{ra.get('risk_score', 'N/A')}/10")
+        c4.metric("📈 Diversification", f"{float(pm.get('diversification_score', 0)):.2f}")
 
-            if val_col:
-                series = df_risk[val_col].dropna()
-                # If values look like prices (> 1 typically), convert to returns
-                if series.abs().mean() > 0.5:
-                    returns = series.pct_change().dropna()
-                    st.info(f"Detected **price data** in column `{val_col}`. Converted to daily returns.")
-                else:
-                    returns = series
-                    st.info(f"Using **return data** from column `{val_col}`.")
-            else:
-                st.error("Could not find a numeric column in the CSV.")
-        except Exception as e:
-            st.error(f"Failed to parse CSV: {e}")
+        # Sub-scores
+        sub = ra.get("sub_scores", {})
+        if sub:
+            st.subheader("🎯 Risk Sub-Scores")
+            s1, s2, s3, s4 = st.columns(4)
+            s1.metric("Concentration", f"{sub.get('concentration_score', 'N/A')}/10")
+            s2.metric("Behavior", f"{sub.get('behavior_score', 'N/A')}/10")
+            s3.metric("Performance", f"{sub.get('performance_score', 'N/A')}/10")
+            s4.metric("Market Risk", f"{sub.get('market_risk_score', 'N/A')}/10")
 
-    # --- Pre-built Fallback ---
-    if returns is None:
+        st.caption(ra.get("explanation", ""))
+
+        # Sector allocation pie chart
+        sector_exp = pm.get("sector_exposure", {})
+        if sector_exp and len(sector_exp) > 1:
+            fig_sector = px.pie(
+                names=list(sector_exp.keys()), values=list(sector_exp.values()),
+                title="Sector Allocation", hole=0.4,
+            )
+            fig_sector.update_layout(height=400)
+            st.plotly_chart(fig_sector, use_container_width=True)
+
+        # Holdings breakdown
+        holdings = risk_result.get("extracted_data", {}).get("holdings", [])
+        if holdings:
+            st.subheader("📊 Holdings Breakdown")
+            weights_list = []
+            for h in holdings:
+                w = h.get("portfolio_weight", 0)
+                weights_list.append({
+                    "Stock": h.get("stock_name", h.get("symbol", "Unknown")),
+                    "Weight %": w if w else 0,
+                    "Value": h.get("total_value", 0),
+                })
+            weights_df = pd.DataFrame(weights_list).sort_values("Weight %", ascending=False)
+            fig_weights = px.bar(
+                weights_df, x="Stock", y="Weight %", color="Weight %",
+                color_continuous_scale="RdYlBu_r", title="Portfolio Weight Distribution",
+            )
+            fig_weights.update_layout(height=400)
+            st.plotly_chart(fig_weights, use_container_width=True)
+
+        # Investor profile
+        profile = risk_result.get("investor_profile", "Unknown")
+        st.subheader(f"📊 Investor Profile: **{profile}**")
+
+        # Recommendations
+        recs = risk_result.get("recommendations", [])
+        if recs:
+            st.subheader("📝 Recommendations")
+            for i, rec in enumerate(recs, 1):
+                st.markdown(f"**{i}.** {rec}")
+
+    else:
+        # --- Pre-built Fallback ---
         st.markdown("**Or select a pre-built portfolio:**")
         try:
             rule_equal, rule_risk, ml_equal, ml_risk, sp500 = load_data()
@@ -686,50 +661,50 @@ elif tab == "⚡ Risk Metrics":
         except Exception as e:
             st.error(f"Failed to load pre-built portfolios: {e}")
 
-    # --- Display Metrics ---
-    if returns is not None and len(returns) > 0:
-        metrics = backtester.calculate_metrics(returns)
+        # Display pre-built metrics
+        if returns is not None and len(returns) > 0:
+            metrics = backtester.calculate_metrics(returns)
 
-        st.subheader("📊 Performance Metrics")
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Cumulative Return", f"{metrics['cumulative_return']:.2%}")
-        m2.metric("Annualized Return", f"{metrics['annualized_return']:.2%}")
-        m3.metric("Annualized Volatility", f"{metrics['annualized_volatility']:.2%}")
-        m4.metric("Sharpe Ratio", f"{metrics['sharpe_ratio']:.2f}")
+            st.subheader("📊 Performance Metrics")
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Cumulative Return", f"{metrics['cumulative_return']:.2%}")
+            m2.metric("Annualized Return", f"{metrics['annualized_return']:.2%}")
+            m3.metric("Annualized Volatility", f"{metrics['annualized_volatility']:.2%}")
+            m4.metric("Sharpe Ratio", f"{metrics['sharpe_ratio']:.2f}")
 
-        m5, m6, m7 = st.columns(3)
-        m5.metric("Max Drawdown", f"{metrics['max_drawdown']:.2%}")
-        m6.metric("Sortino Ratio", f"{metrics.get('sortino_ratio', 0):.2f}")
-        m7.metric("Calmar Ratio", f"{metrics.get('calmar_ratio', 0):.2f}")
+            m5, m6, m7 = st.columns(3)
+            m5.metric("Max Drawdown", f"{metrics['max_drawdown']:.2%}")
+            m6.metric("Sortino Ratio", f"{metrics.get('sortino_ratio', 0):.2f}")
+            m7.metric("Calmar Ratio", f"{metrics.get('calmar_ratio', 0):.2f}")
 
-        # Monthly returns heatmap
-        st.subheader("🗓️ Monthly Returns Heatmap")
-        monthly = returns.resample("ME").sum()
-        monthly_df = pd.DataFrame({
-            "Year": monthly.index.year, "Month": monthly.index.month, "Return": monthly.values,
-        })
-        if not monthly_df.empty:
-            pivot = monthly_df.pivot_table(values="Return", index="Year", columns="Month")
-            month_names = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
-            pivot.columns = [month_names.get(c, c) for c in pivot.columns]
-            fig_heat = px.imshow(
-                pivot.values, labels=dict(x="Month", y="Year", color="Return"),
-                x=pivot.columns.tolist(), y=pivot.index.tolist(),
-                color_continuous_scale="RdYlGn", aspect="auto", title="Monthly Returns Heatmap",
+            # Monthly returns heatmap
+            st.subheader("🗓️ Monthly Returns Heatmap")
+            monthly = returns.resample("ME").sum()
+            monthly_df = pd.DataFrame({
+                "Year": monthly.index.year, "Month": monthly.index.month, "Return": monthly.values,
+            })
+            if not monthly_df.empty:
+                pivot = monthly_df.pivot_table(values="Return", index="Year", columns="Month")
+                month_names = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+                pivot.columns = [month_names.get(c, c) for c in pivot.columns]
+                fig_heat = px.imshow(
+                    pivot.values, labels=dict(x="Month", y="Year", color="Return"),
+                    x=pivot.columns.tolist(), y=pivot.index.tolist(),
+                    color_continuous_scale="RdYlGn", aspect="auto", title="Monthly Returns Heatmap",
+                )
+                fig_heat.update_layout(height=400)
+                st.plotly_chart(fig_heat, use_container_width=True)
+
+            # Return distribution
+            st.subheader("📉 Return Distribution")
+            fig_dist = px.histogram(
+                x=returns.values, nbins=100, title="Daily Return Distribution",
+                labels={"x": "Daily Return", "y": "Frequency"}, color_discrete_sequence=["#2196F3"],
             )
-            fig_heat.update_layout(height=400)
-            st.plotly_chart(fig_heat, use_container_width=True)
-
-        # Return distribution
-        st.subheader("📉 Return Distribution")
-        fig_dist = px.histogram(
-            x=returns.values, nbins=100, title="Daily Return Distribution",
-            labels={"x": "Daily Return", "y": "Frequency"}, color_discrete_sequence=["#2196F3"],
-        )
-        fig_dist.add_vline(x=returns.mean(), line_dash="dash", line_color="red",
-                           annotation_text=f"Mean: {returns.mean():.4f}")
-        fig_dist.update_layout(height=400)
-        st.plotly_chart(fig_dist, use_container_width=True)
+            fig_dist.add_vline(x=returns.mean(), line_dash="dash", line_color="red",
+                               annotation_text=f"Mean: {returns.mean():.4f}")
+            fig_dist.update_layout(height=400)
+            st.plotly_chart(fig_dist, use_container_width=True)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,2037 @@
+{
+  "metadata": {
+    "model_type": "XGBoost/LightGBM",
+    "explainer": "SHAP TreeExplainer",
+    "num_samples_analyzed": 5450
+  },
+  "global_feature_importance": [
+    {
+      "feature": "quality",
+      "mean_abs_shap": 0.07949800044298172,
+      "rank": 1
+    },
+    {
+      "feature": "momentum",
+      "mean_abs_shap": 0.01822900027036667,
+      "rank": 2
+    },
+    {
+      "feature": "volume",
+      "mean_abs_shap": 0.01606700010597706,
+      "rank": 3
+    },
+    {
+      "feature": "volatility",
+      "mean_abs_shap": 0.010664000175893307,
+      "rank": 4
+    },
+    {
+      "feature": "value",
+      "mean_abs_shap": 0.001749000046402216,
+      "rank": 5
+    }
+  ],
+  "base_value": 0.447275847196579,
+  "per_sample_top_factors": [
+    {
+      "sample_index": 0,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 1,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 2,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 3,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 4,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 5,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 6,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 7,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 8,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 9,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 10,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 11,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 12,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 13,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 14,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 15,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 16,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 17,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 18,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 19,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 20,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 21,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 22,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 23,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 24,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 25,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 26,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 27,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 28,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 29,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 30,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.031127,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.012419,
+          "direction": "positive"
+        },
+        {
+          "feature": "value",
+          "shap_value": 0.008132,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 31,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03898,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.013171,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.008556,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 32,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 33,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 34,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 35,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 36,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 37,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 38,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 39,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 40,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 41,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 42,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 43,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 44,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 45,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 46,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 47,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 48,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 49,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 50,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 51,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 52,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 53,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 54,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 55,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 56,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 57,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 58,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 59,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 60,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 61,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 62,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.083905,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.036312,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.00941,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 63,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.06959,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": -0.009257,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.008718,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 64,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 65,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 66,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 67,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 68,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 69,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 70,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 71,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 72,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 73,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 74,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 75,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 76,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 77,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 78,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 79,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.061977,
+          "direction": "negative"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": -0.030042,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.00703,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 80,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 81,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 82,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 83,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 84,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 85,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 86,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 87,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 88,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 89,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 90,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 91,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 92,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 93,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 94,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 95,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": -0.062599,
+          "direction": "negative"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.019173,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": -0.012411,
+          "direction": "negative"
+        }
+      ]
+    },
+    {
+      "sample_index": 96,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.110008,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.044806,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.006022,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 97,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.05319,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": 0.02692,
+          "direction": "positive"
+        },
+        {
+          "feature": "volatility",
+          "shap_value": 0.008134,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 98,
+      "top_factors": [
+        {
+          "feature": "quality",
+          "shap_value": 0.110008,
+          "direction": "positive"
+        },
+        {
+          "feature": "momentum",
+          "shap_value": 0.044806,
+          "direction": "positive"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.006022,
+          "direction": "positive"
+        }
+      ]
+    },
+    {
+      "sample_index": 99,
+      "top_factors": [
+        {
+          "feature": "momentum",
+          "shap_value": 0.03203,
+          "direction": "positive"
+        },
+        {
+          "feature": "quality",
+          "shap_value": -0.01955,
+          "direction": "negative"
+        },
+        {
+          "feature": "volume",
+          "shap_value": 0.016665,
+          "direction": "positive"
+        }
+      ]
+    }
+  ]
+}
