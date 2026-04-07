@@ -399,6 +399,56 @@ elif tab == "🔍 SHAP Explainability":
                 st.success("✅ SHAP analysis complete!")
             except Exception as e:
                 st.error(f"SHAP analysis failed: {e}")
+                import traceback
+                with st.expander("Error details"):
+                    st.code(traceback.format_exc())
+                st.stop()
+
+    # Display results if available
+    if os.path.exists(json_path):
+        import json
+        with open(json_path, "r") as f:
+            shap_data = json.load(f)
+
+        st.subheader("📊 Global Feature Importance")
+        importance = pd.DataFrame(shap_data["global_feature_importance"])
+        fig = px.bar(
+            importance, x="mean_abs_shap", y="feature",
+            orientation="h", color="mean_abs_shap",
+            color_continuous_scale="RdYlBu_r",
+            title="Mean |SHAP Value| per Factor",
+        )
+        fig.update_layout(height=400, yaxis=dict(autorange="reversed"))
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Display SHAP plots
+        col1, col2 = st.columns(2)
+        with col1:
+            if os.path.exists(bar_path):
+                st.image(bar_path, caption="SHAP Bar Chart")
+        with col2:
+            if os.path.exists(summary_path):
+                st.image(summary_path, caption="SHAP Summary Plot")
+
+        # Per-sample analysis
+        per_sample = shap_data.get("per_sample_top_factors", [])
+        if per_sample:
+            st.subheader("🔎 Per-Stock Factor Breakdown (Sample)")
+            sample_df = []
+            for item in per_sample[:20]:
+                for factor in item["top_factors"]:
+                    sample_df.append({
+                        "Sample": item["sample_index"],
+                        "Factor": factor["feature"],
+                        "SHAP Value": factor["shap_value"],
+                        "Direction": factor["direction"],
+                    })
+            if sample_df:
+                st.dataframe(pd.DataFrame(sample_df), use_container_width=True)
+    else:
+        st.info("No SHAP data found. Click **Run SHAP Analysis** to generate.")
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # TAB 6: AI INSIGHTS (PDF + Manual)
 # ═══════════════════════════════════════════════════════════════════════════════
