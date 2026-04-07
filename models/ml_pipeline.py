@@ -101,7 +101,7 @@ class FactorModelTrainer:
         self.model_dir.mkdir(parents=True, exist_ok=True)
 
         # Default factor files — relative paths
-        base = self.data_dir / "processed_not_normalized" / "factor_scores"
+        base = self.data_dir / "processed" / "factor_scores"
         self.factor_files = factor_files if factor_files is not None else {
             "value": str(base / "value_scores.csv"),
             "momentum": str(base / "momentum_scores.csv"),

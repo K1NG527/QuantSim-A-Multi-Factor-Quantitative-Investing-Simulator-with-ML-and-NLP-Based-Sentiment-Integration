@@ -450,124 +450,244 @@ elif tab == "🔍 SHAP Explainability":
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 6: AI INSIGHTS (NEW)
+# TAB 6: AI INSIGHTS (CSV + Manual)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 elif tab == "🧠 AI Insights":
     st.header("🧠 AI Portfolio Insights")
-    st.markdown("Get AI-powered analysis of your portfolio using GPT.")
+    st.markdown("Upload a portfolio CSV **or** manually configure your portfolio to get AI-powered analysis.")
 
-    # Interactive portfolio input
-    st.subheader("📊 Portfolio Configuration")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        total_value = st.number_input("Total Portfolio Value ($)", value=500000, step=10000)
-        n_stocks = st.number_input("Number of Stocks", value=12, step=1, min_value=1)
-        risk_score = st.slider("Risk Score", 1.0, 10.0, 5.5, 0.5)
-    with col2:
-        concentration = st.slider("Top-3 Concentration (%)", 10.0, 100.0, 45.0, 1.0)
-        volatility = st.slider("Portfolio Volatility", 0.05, 0.80, 0.28, 0.01)
-        div_score = st.slider("Diversification Score", 0.0, 1.0, 0.72, 0.01)
-
-    # Factor exposures via sliders
-    st.subheader("⚖️ Factor Exposures")
-    fc1, fc2, fc3, fc4, fc5 = st.columns(5)
-    with fc1:
-        f_value = st.slider("Value", 0.0, 1.0, 0.5, 0.05)
-    with fc2:
-        f_momentum = st.slider("Momentum", 0.0, 1.0, 0.5, 0.05)
-    with fc3:
-        f_quality = st.slider("Quality", 0.0, 1.0, 0.5, 0.05)
-    with fc4:
-        f_volatility = st.slider("Volatility", 0.0, 1.0, 0.5, 0.05)
-    with fc5:
-        f_volume = st.slider("Volume", 0.0, 1.0, 0.5, 0.05)
-
-    # Factor exposure radar chart
-    fig_radar = go.Figure(data=go.Scatterpolar(
-        r=[f_value, f_momentum, f_quality, f_volatility, f_volume, f_value],
-        theta=["Value", "Momentum", "Quality", "Volatility", "Volume", "Value"],
-        fill="toself",
-        fillcolor="rgba(33, 150, 243, 0.3)",
-        line_color="#2196F3",
-    ))
-    fig_radar.update_layout(
-        polar=dict(radialaxis=dict(visible=True, range=[0, 1])),
-        title="Factor Exposure Profile",
-        height=400,
+    # --- CSV Upload Mode ---
+    st.subheader("📂 Option 1: Upload Portfolio CSV")
+    ai_csv = st.file_uploader(
+        "Upload a CSV with portfolio holdings (columns like: symbol/stock, value/weight, quantity, price)",
+        type=["csv"], key="ai_csv_upload",
     )
-    st.plotly_chart(fig_radar, use_container_width=True)
+
+    portfolio_data = None  # Will be set by either CSV or manual mode
+
+    if ai_csv is not None:
+        try:
+            df_uploaded = pd.read_csv(ai_csv)
+            st.dataframe(df_uploaded.head(10), use_container_width=True)
+
+            # Auto-detect value column
+            val_col = None
+            for candidate in ["value", "total_value", "market_value", "amount", "Value", "Total Value"]:
+                if candidate in df_uploaded.columns:
+                    val_col = candidate
+                    break
+
+            weight_col = None
+            for candidate in ["weight", "portfolio_weight", "Weight", "allocation"]:
+                if candidate in df_uploaded.columns:
+                    weight_col = candidate
+                    break
+
+            symbol_col = None
+            for candidate in ["symbol", "ticker", "stock", "stock_name", "Symbol", "Ticker"]:
+                if candidate in df_uploaded.columns:
+                    symbol_col = candidate
+                    break
+
+            n_stocks = len(df_uploaded)
+            total_value = 0
+            concentration = 0
+            div_score = 0
+            volatility_est = 0.25
+
+            if val_col and pd.api.types.is_numeric_dtype(df_uploaded[val_col]):
+                total_value = float(df_uploaded[val_col].sum())
+                if total_value > 0:
+                    weights = df_uploaded[val_col] / total_value
+                    top3 = weights.nlargest(3).sum() * 100
+                    concentration = float(top3)
+                    hhi = (weights ** 2).sum()
+                    div_score = float(1 - hhi)
+            elif weight_col and pd.api.types.is_numeric_dtype(df_uploaded[weight_col]):
+                weights = df_uploaded[weight_col]
+                if weights.sum() > 0:
+                    weights = weights / weights.sum()
+                    top3 = weights.nlargest(3).sum() * 100
+                    concentration = float(top3)
+                    hhi = (weights ** 2).sum()
+                    div_score = float(1 - hhi)
+                    total_value = 100000  # placeholder
+
+            # Risk score heuristic
+            risk_score = min(10, max(1, concentration / 10))
+
+            st.success(f"✅ Parsed **{n_stocks}** holdings | Total Value: **${total_value:,.0f}** | Top-3 Concentration: **{concentration:.1f}%**")
+
+            portfolio_data = {
+                "portfolio_metrics": {
+                    "total_portfolio_value": total_value,
+                    "number_of_stocks": n_stocks,
+                    "top_3_concentration_ratio": round(concentration, 1),
+                    "diversification_score": round(div_score, 2),
+                    "portfolio_volatility": volatility_est,
+                },
+                "risk_analysis": {"risk_score": round(risk_score, 1)},
+                "holdings_summary": df_uploaded.to_dict(orient="records")[:20],
+            }
+        except Exception as e:
+            st.error(f"Failed to parse CSV: {e}")
+
+    # --- Manual Fallback Mode ---
+    with st.expander("⚙️ Option 2: Manual Configuration (click to expand)", expanded=(ai_csv is None)):
+        col1, col2 = st.columns(2)
+        with col1:
+            m_total_value = st.number_input("Total Portfolio Value ($)", value=500000, step=10000)
+            m_n_stocks = st.number_input("Number of Stocks", value=12, step=1, min_value=1)
+            m_risk_score = st.slider("Risk Score", 1.0, 10.0, 5.5, 0.5)
+        with col2:
+            m_concentration = st.slider("Top-3 Concentration (%)", 10.0, 100.0, 45.0, 1.0)
+            m_volatility = st.slider("Portfolio Volatility", 0.05, 0.80, 0.28, 0.01)
+            m_div_score = st.slider("Diversification Score", 0.0, 1.0, 0.72, 0.01)
+
+        st.subheader("⚖️ Factor Exposures")
+        fc1, fc2, fc3, fc4, fc5 = st.columns(5)
+        with fc1:
+            f_value = st.slider("Value", 0.0, 1.0, 0.5, 0.05)
+        with fc2:
+            f_momentum = st.slider("Momentum", 0.0, 1.0, 0.5, 0.05)
+        with fc3:
+            f_quality = st.slider("Quality", 0.0, 1.0, 0.5, 0.05)
+        with fc4:
+            f_volatility = st.slider("Volatility", 0.0, 1.0, 0.5, 0.05)
+        with fc5:
+            f_volume = st.slider("Volume", 0.0, 1.0, 0.5, 0.05)
+
+        fig_radar = go.Figure(data=go.Scatterpolar(
+            r=[f_value, f_momentum, f_quality, f_volatility, f_volume, f_value],
+            theta=["Value", "Momentum", "Quality", "Volatility", "Volume", "Value"],
+            fill="toself", fillcolor="rgba(33, 150, 243, 0.3)", line_color="#2196F3",
+        ))
+        fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), title="Factor Exposure Profile", height=400)
+        st.plotly_chart(fig_radar, use_container_width=True)
+
+        if portfolio_data is None:
+            portfolio_data = {
+                "portfolio_metrics": {
+                    "total_portfolio_value": m_total_value,
+                    "number_of_stocks": m_n_stocks,
+                    "top_3_concentration_ratio": m_concentration,
+                    "diversification_score": m_div_score,
+                    "portfolio_volatility": m_volatility,
+                },
+                "risk_analysis": {"risk_score": m_risk_score},
+                "factor_exposures": {
+                    "value": f_value, "momentum": f_momentum,
+                    "quality": f_quality, "volatility": f_volatility,
+                    "volume": f_volume,
+                },
+            }
 
     if st.button("🚀 Generate AI Insights", type="primary"):
-        portfolio_data = {
-            "portfolio_metrics": {
-                "total_portfolio_value": total_value,
-                "number_of_stocks": n_stocks,
-                "top_3_concentration_ratio": concentration,
-                "diversification_score": div_score,
-                "portfolio_volatility": volatility,
-            },
-            "risk_analysis": {"risk_score": risk_score},
-            "factor_exposures": {
-                "value": f_value, "momentum": f_momentum,
-                "quality": f_quality, "volatility": f_volatility,
-                "volume": f_volume,
-            },
-        }
+        if portfolio_data is None:
+            st.warning("Please upload a CSV or configure your portfolio above.")
+        else:
+            with st.spinner("🧠 Generating AI insights..."):
+                try:
+                    from scripts.ai_insights import generate_ai_insights
+                    insights = generate_ai_insights(portfolio_data)
 
-        with st.spinner("🧠 Generating AI insights..."):
-            try:
-                from scripts.ai_insights import generate_ai_insights
-                insights = generate_ai_insights(portfolio_data)
-
-                st.subheader(f"📋 Analysis ({insights['source'].upper()})")
-
-                st.markdown("### 🔴 Risk Summary")
-                st.markdown(insights["risk_summary"])
-
-                st.markdown("### 🔵 Diversification Analysis")
-                st.markdown(insights["diversification_analysis"])
-
-                st.markdown("### 💡 Suggestions")
-                for i, s in enumerate(insights.get("suggestions", []), 1):
-                    st.markdown(f"**{i}.** {s}")
-
-                if insights.get("raw_response"):
-                    with st.expander("📝 Full AI Response"):
-                        st.markdown(insights["raw_response"])
-
-            except Exception as e:
-                st.error(f"Failed to generate insights: {e}")
+                    st.subheader(f"📋 Analysis ({insights['source'].upper()})")
+                    st.markdown("### 🔴 Risk Summary")
+                    st.markdown(insights["risk_summary"])
+                    st.markdown("### 🔵 Diversification Analysis")
+                    st.markdown(insights["diversification_analysis"])
+                    st.markdown("### 💡 Suggestions")
+                    for i, s in enumerate(insights.get("suggestions", []), 1):
+                        st.markdown(f"**{i}.** {s}")
+                    if insights.get("raw_response"):
+                        with st.expander("📝 Full AI Response"):
+                            st.markdown(insights["raw_response"])
+                except Exception as e:
+                    st.error(f"Failed to generate insights: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 7: RISK METRICS PANEL (NEW)
+# TAB 7: RISK METRICS PANEL (CSV + Pre-built)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 elif tab == "⚡ Risk Metrics":
     st.header("⚡ Risk Metrics Dashboard")
-    st.markdown("Comprehensive risk analysis with interactive controls.")
+    st.markdown("Upload your own portfolio CSV **or** select a pre-built strategy.")
 
-    try:
-        rule_equal, rule_risk, ml_equal, ml_risk, sp500 = load_data()
+    returns = None  # Will hold the daily returns series
 
-        # Portfolio selector
-        portfolio_choice = st.selectbox(
-            "Select Portfolio",
-            ["Equal Weight (Rule)", "Risk-Adjusted (Rule)", "Equal Weight (ML)", "Risk-Adjusted (ML)"]
-        )
+    # --- CSV Upload Mode ---
+    risk_csv = st.file_uploader(
+        "Upload a CSV with daily returns or prices (columns: date + return/close/price)",
+        type=["csv"], key="risk_csv_upload",
+    )
 
-        portfolio_map = {
-            "Equal Weight (Rule)": rule_equal,
-            "Risk-Adjusted (Rule)": rule_risk,
-            "Equal Weight (ML)": ml_equal,
-            "Risk-Adjusted (ML)": ml_risk,
-        }
-        selected = portfolio_map[portfolio_choice]
-        returns = selected["Daily Return"]
+    if risk_csv is not None:
+        try:
+            df_risk = pd.read_csv(risk_csv)
+            # Find date column
+            date_col = None
+            for candidate in df_risk.columns:
+                if "date" in candidate.lower():
+                    date_col = candidate
+                    break
+            if date_col is None:
+                date_col = df_risk.columns[0]
+            df_risk[date_col] = pd.to_datetime(df_risk[date_col])
+            df_risk = df_risk.set_index(date_col).sort_index()
 
-        # Metrics
+            # Find the value column
+            val_col = None
+            for candidate in ["return", "daily_return", "returns", "Daily Return"]:
+                if candidate in df_risk.columns:
+                    val_col = candidate
+                    break
+            if val_col is None:
+                for candidate in ["close", "Close", "price", "Price", "value", "Value"]:
+                    if candidate in df_risk.columns:
+                        val_col = candidate
+                        break
+
+            if val_col is None:
+                numeric_cols = df_risk.select_dtypes(include=np.number).columns
+                if len(numeric_cols) > 0:
+                    val_col = numeric_cols[0]
+
+            if val_col:
+                series = df_risk[val_col].dropna()
+                # If values look like prices (> 1 typically), convert to returns
+                if series.abs().mean() > 0.5:
+                    returns = series.pct_change().dropna()
+                    st.info(f"Detected **price data** in column `{val_col}`. Converted to daily returns.")
+                else:
+                    returns = series
+                    st.info(f"Using **return data** from column `{val_col}`.")
+            else:
+                st.error("Could not find a numeric column in the CSV.")
+        except Exception as e:
+            st.error(f"Failed to parse CSV: {e}")
+
+    # --- Pre-built Fallback ---
+    if returns is None:
+        st.markdown("**Or select a pre-built portfolio:**")
+        try:
+            rule_equal, rule_risk, ml_equal, ml_risk, sp500 = load_data()
+            portfolio_choice = st.selectbox(
+                "Select Portfolio",
+                ["Equal Weight (Rule)", "Risk-Adjusted (Rule)", "Equal Weight (ML)", "Risk-Adjusted (ML)"]
+            )
+            portfolio_map = {
+                "Equal Weight (Rule)": rule_equal, "Risk-Adjusted (Rule)": rule_risk,
+                "Equal Weight (ML)": ml_equal, "Risk-Adjusted (ML)": ml_risk,
+            }
+            selected = portfolio_map[portfolio_choice]
+            returns = selected["Daily Return"]
+        except Exception as e:
+            st.error(f"Failed to load pre-built portfolios: {e}")
+
+    # --- Display Metrics ---
+    if returns is not None and len(returns) > 0:
         metrics = backtester.calculate_metrics(returns)
 
         st.subheader("📊 Performance Metrics")
@@ -582,28 +702,20 @@ elif tab == "⚡ Risk Metrics":
         m6.metric("Sortino Ratio", f"{metrics.get('sortino_ratio', 0):.2f}")
         m7.metric("Calmar Ratio", f"{metrics.get('calmar_ratio', 0):.2f}")
 
-        # Returns heatmap (monthly)
+        # Monthly returns heatmap
         st.subheader("🗓️ Monthly Returns Heatmap")
         monthly = returns.resample("ME").sum()
         monthly_df = pd.DataFrame({
-            "Year": monthly.index.year,
-            "Month": monthly.index.month,
-            "Return": monthly.values,
+            "Year": monthly.index.year, "Month": monthly.index.month, "Return": monthly.values,
         })
         if not monthly_df.empty:
             pivot = monthly_df.pivot_table(values="Return", index="Year", columns="Month")
-            month_names = {1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
-                           7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"}
+            month_names = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
             pivot.columns = [month_names.get(c, c) for c in pivot.columns]
-
             fig_heat = px.imshow(
-                pivot.values,
-                labels=dict(x="Month", y="Year", color="Return"),
-                x=pivot.columns.tolist(),
-                y=pivot.index.tolist(),
-                color_continuous_scale="RdYlGn",
-                aspect="auto",
-                title="Monthly Returns Heatmap",
+                pivot.values, labels=dict(x="Month", y="Year", color="Return"),
+                x=pivot.columns.tolist(), y=pivot.index.tolist(),
+                color_continuous_scale="RdYlGn", aspect="auto", title="Monthly Returns Heatmap",
             )
             fig_heat.update_layout(height=400)
             st.plotly_chart(fig_heat, use_container_width=True)
@@ -611,83 +723,81 @@ elif tab == "⚡ Risk Metrics":
         # Return distribution
         st.subheader("📉 Return Distribution")
         fig_dist = px.histogram(
-            x=returns.values, nbins=100,
-            title="Daily Return Distribution",
-            labels={"x": "Daily Return", "y": "Frequency"},
-            color_discrete_sequence=["#2196F3"],
+            x=returns.values, nbins=100, title="Daily Return Distribution",
+            labels={"x": "Daily Return", "y": "Frequency"}, color_discrete_sequence=["#2196F3"],
         )
         fig_dist.add_vline(x=returns.mean(), line_dash="dash", line_color="red",
                            annotation_text=f"Mean: {returns.mean():.4f}")
         fig_dist.update_layout(height=400)
         st.plotly_chart(fig_dist, use_container_width=True)
 
-    except Exception as e:
-        st.error(f"Failed to load risk metrics: {e}")
-        import traceback
-        with st.expander("Error details"):
-            st.code(traceback.format_exc())
-
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 8: SENTIMENT ANALYSIS (NEW)
+# TAB 8: SENTIMENT ANALYSIS (Fixed — uses session_state)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 elif tab == "📰 Sentiment Analysis":
     st.header("📰 News Sentiment Analysis")
     st.markdown("Analyze market sentiment using Finnhub news + FinBERT NLP model.")
 
+    # Initialize session state for sentiment results
+    if "sentiment_results" not in st.session_state:
+        st.session_state.sentiment_results = None
+    if "sentiment_running" not in st.session_state:
+        st.session_state.sentiment_running = False
+
     ticker_input = st.text_input("Enter ticker(s) separated by comma", "AAPL, MSFT, GOOGL")
     days_back = st.slider("Days of news to analyze", 1, 90, 30)
     store_db = st.checkbox("Store results in database", value=False)
 
-    if st.button("🔍 Analyze Sentiment", type="primary"):
+    if st.button("🔍 Analyze Sentiment", type="primary") and not st.session_state.sentiment_running:
         tickers = [t.strip().upper() for t in ticker_input.split(",") if t.strip()]
 
         if not tickers:
             st.warning("Please enter at least one ticker.")
         else:
-            with st.spinner(f"Analyzing sentiment for {', '.join(tickers)}..."):
+            st.session_state.sentiment_running = True
+            with st.spinner(f"Analyzing sentiment for {', '.join(tickers)}... (this may take a moment on first run as FinBERT downloads)"):
                 try:
                     from scripts.sentiment_pipeline import compute_sentiment_batch
-
                     df = compute_sentiment_batch(tickers, days_back=days_back, store_db=store_db)
-
-                    st.subheader("📊 Sentiment Results")
-                    st.dataframe(df, use_container_width=True)
-
-                    # Sentiment bar chart
-                    fig = px.bar(
-                        df, x="ticker", y="sentiment_score",
-                        color="sentiment_label",
-                        color_discrete_map={
-                            "positive": "#4CAF50",
-                            "negative": "#F44336",
-                            "neutral": "#9E9E9E",
-                        },
-                        title="Sentiment Score by Ticker",
-                    )
-                    fig.update_layout(height=400)
-                    st.plotly_chart(fig, use_container_width=True)
-
-                    # Sentiment composition
-                    if len(df) > 0:
-                        fig_comp = go.Figure()
-                        for _, row in df.iterrows():
-                            fig_comp.add_trace(go.Bar(
-                                name=row["ticker"],
-                                x=["Positive %", "Negative %", "Neutral %"],
-                                y=[row.get("positive_pct", 0),
-                                   row.get("negative_pct", 0),
-                                   row.get("neutral_pct", 0)],
-                            ))
-                        fig_comp.update_layout(
-                            title="Sentiment Composition",
-                            barmode="group", height=400,
-                        )
-                        st.plotly_chart(fig_comp, use_container_width=True)
-
+                    st.session_state.sentiment_results = df
                 except Exception as e:
                     st.error(f"Sentiment analysis failed: {e}")
                     import traceback
                     with st.expander("Error details"):
                         st.code(traceback.format_exc())
+                finally:
+                    st.session_state.sentiment_running = False
+
+    # Display cached results (persists across reruns)
+    if st.session_state.sentiment_results is not None:
+        df = st.session_state.sentiment_results
+        st.subheader("📊 Sentiment Results")
+        st.dataframe(df, use_container_width=True)
+
+        # Sentiment bar chart
+        fig = px.bar(
+            df, x="ticker", y="sentiment_score",
+            color="sentiment_label",
+            color_discrete_map={"positive": "#4CAF50", "negative": "#F44336", "neutral": "#9E9E9E"},
+            title="Sentiment Score by Ticker",
+        )
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Sentiment composition
+        if len(df) > 0:
+            fig_comp = go.Figure()
+            for _, row in df.iterrows():
+                fig_comp.add_trace(go.Bar(
+                    name=row["ticker"],
+                    x=["Positive %", "Negative %", "Neutral %"],
+                    y=[row.get("positive_pct", 0), row.get("negative_pct", 0), row.get("neutral_pct", 0)],
+                ))
+            fig_comp.update_layout(title="Sentiment Composition", barmode="group", height=400)
+            st.plotly_chart(fig_comp, use_container_width=True)
+
+        if st.button("🗑️ Clear Results"):
+            st.session_state.sentiment_results = None
+            st.rerun()
