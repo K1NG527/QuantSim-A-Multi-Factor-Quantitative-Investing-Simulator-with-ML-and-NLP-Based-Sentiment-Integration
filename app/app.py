@@ -1,5 +1,5 @@
 """
-QuantSim — Streamlit Dashboard (Production Upgrade)
+EquiSense — Streamlit Dashboard (Production Upgrade)
 
 Tabs:
     1. Rule-Based Backtest
@@ -29,8 +29,8 @@ import scripts.visualizer as visualizer
 # PAGE CONFIG
 # ═══════════════════════════════════════════════════════════════════════════════
 
-st.set_page_config(page_title="QuantSim — Factor Investing Simulator", layout="wide")
-st.title("📊 QuantSim — Quantitative Factor Investing Simulator")
+st.set_page_config(page_title="EquiSense — Factor Investing Simulator", layout="wide")
+st.title("📊 EquiSense — Quantitative Factor Investing Simulator")
 
 # Sidebar Navigation
 tab = st.sidebar.radio("Select View", [

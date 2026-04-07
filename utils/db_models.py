@@ -1,5 +1,5 @@
 """
-Database ORM Models — SQLAlchemy models for QuantSim portfolio intelligence platform.
+Database ORM Models — SQLAlchemy models for EquiSense portfolio intelligence platform.
 
 Tables:
     - users
@@ -223,7 +223,7 @@ def get_engine():
         url = f"postgresql+psycopg2://{user}:{encoded_pw}@{host}:{port}/{db_name}"
         logger.info("[DB] Connecting to PostgreSQL...")
     else:
-        db_path = os.path.join(os.path.dirname(__file__), "..", "data", "quantsim.db")
+        db_path = os.path.join(os.path.dirname(__file__), "..", "data", "equisense.db")
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         url = f"sqlite:///{os.path.abspath(db_path)}"
         logger.info(f"[DB] PostgreSQL not configured. Using SQLite: {db_path}")

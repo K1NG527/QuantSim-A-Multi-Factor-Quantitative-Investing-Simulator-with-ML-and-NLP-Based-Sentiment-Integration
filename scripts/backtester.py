@@ -1,5 +1,5 @@
 """
-Backtester — Production-grade backtesting engine for QuantSim.
+Backtester — Production-grade backtesting engine for EquiSense.
 
 Improvements over original:
     - Transaction costs (configurable, default 0.1%)

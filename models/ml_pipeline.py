@@ -1,5 +1,5 @@
 """
-ML Pipeline — Production-Grade Factor Model Trainer for QuantSim.
+ML Pipeline — Production-Grade Factor Model Trainer for EquiSense.
 
 Upgrades over original:
     - XGBoost as primary model (fallback: LightGBM)

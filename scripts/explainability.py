@@ -1,5 +1,5 @@
 """
-SHAP Explainability Module — QuantSim
+SHAP Explainability Module — EquiSense
 
 Provides per-prediction and global factor explainability using SHAP values.
 

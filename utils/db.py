@@ -23,7 +23,7 @@ def get_engine():
     else:
         # Fallback to local SQLite
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-        db_path = os.path.join(base_dir, "data", "quantsim.db")
+        db_path = os.path.join(base_dir, "data", "equisense.db")
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         url = f"sqlite:///{db_path}"
         logger.info(f"[DB] PostgreSQL not configured. Using SQLite: {db_path}")

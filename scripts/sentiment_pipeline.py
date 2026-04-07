@@ -1,5 +1,5 @@
 """
-News + Sentiment Pipeline — QuantSim
+News + Sentiment Pipeline — EquiSense
 
 Pipeline:
     1. Fetch company-specific news from Finnhub API

@@ -1,4 +1,4 @@
-# 📈 QuantSim - A Quantitative Factor Investing Simulator
+# 📈 EquiSense - A Quantitative Factor Investing Simulator
 
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Pandas](https://img.shields.io/badge/Data-Pandas-%23150458?logo=pandas)](https://pandas.pydata.org/)
@@ -9,7 +9,7 @@
 [![Streamlit](https://img.shields.io/badge/Built%20With-Streamlit-orange)](https://streamlit.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**QuantSim** is a comprehensive, production-grade simulator for multi-factor stock investing. It bridges the gap between raw financial data and actionable portfolio intelligence by leveraging fundamental quantitative data, Machine Learning (ML), Natural Language Processing (NLP)-based sentiment analysis, Document Intelligence, and Generative AI for portfolio insights. 
+**EquiSense** is a comprehensive, production-grade simulator for multi-factor stock investing. It bridges the gap between raw financial data and actionable portfolio intelligence by leveraging fundamental quantitative data, Machine Learning (ML), Natural Language Processing (NLP)-based sentiment analysis, Document Intelligence, and Generative AI for portfolio insights. 
 
 The platform is tied together with a rich, interactive **Streamlit dashboard** that allows users to backtest strategies, analyze brokerage statements, and interpret ML decisions.
 
@@ -110,8 +110,8 @@ It predicts future returns using an **XGBoost Regressor**, constructs optimized 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/K1NG527/QuantSim-A-Multi-Factor-Quantitative-Investing-Simulator-with-ML-and-NLP-Based-Sentiment-Integration.git
-cd QuantSim-A-Multi-Factor-Quantitative-Investing-Simulator-with-ML-and-NLP-Based-Sentiment-Integration
+git clone https://github.com/K1NG527/EquiSense-A-Multi-Factor-Quantitative-Investing-Simulator-with-ML-and-NLP-Based-Sentiment-Integration.git
+cd EquiSense-A-Multi-Factor-Quantitative-Investing-Simulator-with-ML-and-NLP-Based-Sentiment-Integration
 ```
 
 ### 2. Create Virtual Environment & Install Dependencies
@@ -137,7 +137,7 @@ DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=quantsim
+DB_NAME=equisense
 ```
 
 ### 4. Data Setup

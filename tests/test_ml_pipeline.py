@@ -1,5 +1,5 @@
 """
-Unit tests for ml_pipeline.py — QuantSim
+Unit tests for ml_pipeline.py — EquiSense
 
 Tests:
     - Time-series split correctness (no future data leakage)

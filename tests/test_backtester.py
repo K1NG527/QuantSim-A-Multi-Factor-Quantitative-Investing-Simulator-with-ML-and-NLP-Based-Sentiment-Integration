@@ -1,5 +1,5 @@
 """
-Unit tests for backtester.py — QuantSim
+Unit tests for backtester.py — EquiSense
 
 Tests:
     - Metrics calculation correctness

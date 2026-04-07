@@ -1,5 +1,5 @@
 """
-AI Portfolio Insights — QuantSim
+AI Portfolio Insights — EquiSense
 
 Uses OpenAI GPT to generate intelligent portfolio analysis including:
     - Risk summary

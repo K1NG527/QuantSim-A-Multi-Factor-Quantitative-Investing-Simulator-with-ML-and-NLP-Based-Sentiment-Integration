@@ -1,5 +1,5 @@
 """
-Unit tests for market_data.py — QuantSim
+Unit tests for market_data.py — EquiSense
 
 Tests:
     - Cache read/write lifecycle

@@ -1,5 +1,5 @@
 """
-Query Optimizer — QuantSim
+Query Optimizer — EquiSense
 
 Provides tools for analyzing and optimizing database query performance:
     - analyze_query_performance(): profile and log slow queries

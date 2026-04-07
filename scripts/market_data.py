@@ -1,5 +1,5 @@
 """
-Market Data Layer — Production-grade module for QuantSim.
+Market Data Layer — Production-grade module for EquiSense.
 
 Sources:
     Primary:  Alpha Vantage (daily prices, fundamentals, technical indicators)
