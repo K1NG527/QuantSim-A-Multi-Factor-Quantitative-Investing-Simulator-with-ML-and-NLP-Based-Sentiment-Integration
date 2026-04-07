@@ -1,0 +1,34 @@
+pandas>=2.0
+numpy>=1.22
+scikit-learn>=1.2
+torch>=2.0             # needed by FinBERT
+transformers>=4.30     # for Hugging Face FinBERT
+sentencepiece          # required for some tokenizers
+nltk>=3.8
+SQLAlchemy>=2.0
+psycopg2-binary>=2.9
+matplotlib>=3.6
+seaborn>=0.12
+plotly>=5.15
+streamlit>=1.20
+requests>=2.31
+joblib>=1.3
+pdfplumber>=0.9
+yfinance>=0.2
+python-dotenv>=1.0
+
+# ML Upgrade
+xgboost>=2.0
+lightgbm>=4.0
+
+# Explainability
+shap>=0.43
+
+# AI Insights
+openai>=1.0
+
+# News / Sentiment
+finnhub-python>=2.4
+
+# Testing
+pytest>=7.0

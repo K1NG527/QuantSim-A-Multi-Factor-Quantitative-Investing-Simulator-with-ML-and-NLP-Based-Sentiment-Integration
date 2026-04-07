@@ -1,0 +1,57 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Environments
+venv/
+env/
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Databases & Large Data
+*.db
+*.sqlite3
+data/raw/
+data/processed/
+data/temp/
+*.pkl
+*.model
+*.joblib
+*.png
+*.jpg
+*.pdf
+*.docx
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+.spyderproject
+.settings/
+
+# Tests
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+
+# QuantSim Specific
+API KEYS.txt
+models/*.pkl
+models/*.png
+data/*.json
+data/processed_not_normalized/
+!data/processed_not_normalized/.gitkeep
